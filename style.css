@@ -1,0 +1,30 @@
+*{font-family: Arial, Helvetica, sans-serif;}
+
+body{
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 150px;
+    gap: 25px;
+}
+
+button{
+    width: 100px;
+    height: 100px;
+    font-weight: bolder;
+}
+
+.buttonGroup{
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+}
+
+.displayText{
+    font-size: larger;
+    font-weight: bolder;
+}
+
+.scoreText{
+    font-size: medium;
+}

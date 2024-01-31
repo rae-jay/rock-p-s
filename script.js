@@ -1,38 +1,107 @@
 console.log("does it just kinda go");
 
-/*
-    get user prompt, get computer prompt, throw both into playRound
-    playRound compares, prompts tie/invalid, or else gives result to gameResult
- */
 
-playGame(5);    
 
-function playGame(bestOfNum){
-    let playerWins = 0;
-    let compWins = 0;
-    let keepGoing = true;
-    
-    while(keepGoing == true){
-        if(playerWins >= 3){
-            console.log("You win the game! Yay!");
-            keepGoing = false;
-        }
-        else if(compWins >= 3){
-            console.log("You lost the game! Yay!");
-            keepGoing = false;
-        }
-        else{
-            console.log("stats: comp " + compWins + "/you " + playerWins);
-            let rResult = playRound(window.prompt("please select rock, paper, or scissors"), getComputerChoice());
-            if(rResult == "win"){
-                playerWins += 1;
-            }
-            else if(rResult == "loss"){
-                compWins += 1;
-            }
-        }
+document.querySelector(".buttonGroup").addEventListener('click', (eek) => {
+    let target = eek.target;
+
+    switch(target.id){
+        case "rockButt":
+            playRound("rock");
+            break;
+        case "paperButt":
+            playRound("paper");
+            break;
+        case "scissorButt":
+            playRound("scissors");
+            break;
+    }
+})
+
+
+
+const displayText = document.querySelector(".displayText");
+const scoreText = document.querySelector(".scoreText");
+
+const rounds = 5;
+
+let playerWins = 0;
+let compWins = 0;
+
+displayText.textContent = "please select rock, paper, or scissors";
+scoreText.textContent = ":)";
+
+
+function roundStart(){
+    scoreText.textContent = "Computer " + compWins + "/You " + playerWins;
+
+    if(playerWins >= (rounds+1)/2){
+        displayText.textContent = "You win the game! Yay!";
+
+        playerWins = 0;
+        compWins = 0;
+    }
+    else if(compWins >= (rounds+1)/2){
+        displayText.textContent = "You lost the game! Yay!";
+
+        playerWins = 0;
+        compWins = 0;
     }
 }
+
+
+
+function playRound(playerChoice){
+    let computerChoice = getComputerChoice();
+
+    if(playerChoice == computerChoice){
+        displayText.textContent = "tie! please try again";
+        //score display is sloppy, but in case the first pick of any round after the first is a tie, score
+        //would otherwise be stuck on last round's numbers
+        scoreText.textContent = "Computer " + compWins + "/You " + playerWins;
+    }
+    else{
+
+        switch(playerChoice){
+            case "rock":
+                if(computerChoice == "paper"){
+                    displayText.textContent = "you lose! paper covers rock";
+                    compWins += 1;
+                }else{
+                    displayText.textContent = "you win! rock crushes scissors";
+                    playerWins += 1;
+                }
+                break;
+            ;
+            case "paper":
+                if(computerChoice == "scissors"){
+                    displayText.textContent = "you lose! scissors cuts paper";
+                    compWins += 1;
+                }else{
+                    displayText.textContent = "you win! paper covers rock";
+                    playerWins += 1;
+                }
+                break;
+            ;
+            case "scissors":
+                if(computerChoice == "rock"){
+                    displayText.textContent = "you lose! rock crushes scissors";
+                    compWins += 1;
+                }else{
+                    displayText.textContent = "you win! scissors cuts paper";
+                    playerWins += 1;
+                }
+                break
+            ;
+            default:
+                displayText.textContent = "something just went horribly wrong";
+                break;
+            ;
+        }
+
+        roundStart();
+    }
+
 
 
 function getComputerChoice(){
@@ -52,54 +121,4 @@ function getComputerChoice(){
             return "paper";
     }
 }
-
-function playRound(playerChoiceInpt, computerChoice){
-    let playerChoice = playerChoiceInpt.toLowerCase();
-    
-    let rResult = "tie";
-
-    if(playerChoice == computerChoice){
-        console.log("tie! please try again");
-    }
-    else{
-
-        switch(playerChoice){
-            case "rock":
-                if(computerChoice == "paper"){
-                    console.log("you lose! paper covers rock");
-                    rResult = "loss";
-                }else{
-                    console.log("you win! rock crushes scissors");
-                    rResult = "win";
-                }
-                break;
-            ;
-            case "paper":
-                if(computerChoice == "scissors"){
-                    console.log("you lose! scissors cuts paper");
-                    rResult = "loss";
-                }else{
-                    console.log("you win! paper covers rock");
-                    rResult = "win";
-                }
-                break;
-            ;
-            case "scissors":
-                if(computerChoice == "rock"){
-                    console.log("you lose! rock crushes scissors");
-                    rResult = "loss";
-                }else{
-                    console.log("you win! scissors cuts paper");
-                    rResult = "win";
-                }
-                break
-            ;
-            default:
-                console.log("invalid input, try again")
-                break;
-            ;
-        }
-    }
-
-    return rResult;
 }
